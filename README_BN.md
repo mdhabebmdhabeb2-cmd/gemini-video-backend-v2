@@ -1,23 +1,23 @@
-# Gemini Video Studio Backend
+# Gemini Video Studio — Complete Render package
 
-এটি Render-এ চালানোর জন্য Node.js backend starter। `npm start` দিয়ে চালু হবে।
+This package includes the public HTML frontend and the Node.js backend in one Render web service. Visitors do not enter a backend URL or API key.
 
-## Render সেটিংস
+## Render configuration
 - Runtime: Node
-- Build Command: `npm install`
-- Start Command: `npm start`
+- Build command: `npm install`
+- Start command: `npm start`
+- Environment variable: `GEMINI_API_KEY` = a NEW Gemini API key created in Google AI Studio
 
-## গুরুত্বপূর্ণ সীমাবদ্ধতা
-এই ZIP-এ কোনো AI provider-এর API key নেই এবং provider নির্বাচন/সংযোগও করা নেই। তাই Deploy করলে Backend-এর নিজস্ব URL ও `/health` কাজ করবে, কিন্তু ভিডিও তৈরি করার অনুরোধে 503 error আসবে—এটি ইচ্ছাকৃত; ভুয়া ভিডিও বা ভুয়া URL দেখানো হয় না।
+Do not put the API key in `public/index.html`, APK assets, GitHub, or this ZIP.
 
-## AI provider যুক্ত করার আগে
-Render Dashboard → Service → Environment-এ Provider-এর অফিসিয়াল API-র তথ্য বসাতে হবে:
-- `VIDEO_API_URL`: provider-এর create-video HTTPS endpoint
-- `VIDEO_API_KEY`: provider-এর API key (গোপন রাখুন)
-- `VIDEO_STATUS_URL`: provider asynchronous job status endpoint (যদি provider jobId ফেরত দেয়)
-- `APP_ORIGIN`: frontend-এর HTTPS origin
+## Deploy
+Upload this project to a GitHub repository and connect that repository to your existing Render Web Service, or replace the service source with these files. Set the environment variable in Render and deploy. Open the Render service URL; it serves the app at `/` and health at `/health`.
 
-Provider create endpoint-কে এই JSON fields বুঝতে হবে: `prompt`, `style`, `duration`, `aspectRatio`, `resolution`, `language`, `cameraMovement`, `lighting`, `backgroundMusic`, `quality`, `negativePrompt`।
-সফল হলে সরাসরি `{ "videoUrl": "https://..." }` অথবা `{ "jobId": "...", "statusUrl": "https://..." }` ফেরত দিতে হবে। Status endpoint `{ "status": "processing" }`, `{ "status": "failed", "error": "..." }` অথবা `{ "videoUrl": "https://..." }` ফেরত দেবে।
+## API implementation
+Uses the Gemini Interactions API and model `gemini-omni-1.2-flash` for video generation. The server starts a job and the browser polls for completion. Generated MP4 files are served from `/generated/`.
 
-এই চুক্তির সঙ্গে Provider API না মিললে আলাদা adapter কোড লাগবে। Gemini API-র বর্তমান মডেল/endpoint ও অ্যাকাউন্ট-অ্যাক্সেস যাচাই না করে অনুমান করে API URL বসাবেন না।
+## Important
+- This package has been syntax-checked, but a live video generation test cannot be performed without a valid, active Gemini API key in your Render environment.
+- Google API access, quota, billing, and regional availability must be enabled for the key/project.
+- A public app can incur costs on the owner's API account. Add user authentication, per-user quotas, abuse protection, and billing controls before broad public release.
+- Render local filesystem storage may be ephemeral on some plans; generated files can be lost on redeploy/restart. For production, use persistent storage or a cloud object store.
