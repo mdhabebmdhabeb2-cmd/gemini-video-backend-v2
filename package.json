@@ -1,0 +1,13 @@
+{
+  "name": "gemini-video-studio-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend API adapter for Gemini Video Studio frontend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
