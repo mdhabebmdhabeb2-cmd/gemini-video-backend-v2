@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090d18"><title>Gemini Video Studio</title>
+<style>
+:root{--bg:#090d18;--panel:#111a2b;--line:#26334b;--txt:#eef4ff;--muted:#9aa9c2;--a:#7c5cff;--b:#20d6c7}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#22214c 0,transparent 35%),var(--bg);color:var(--txt);font:15px system-ui,Arial,"Noto Sans Bengali",sans-serif}
+main{max-width:760px;margin:auto;padding:18px 14px 55px}.top{display:flex;align-items:center;gap:12px;margin:8px 0 20px}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,var(--a),var(--b));display:grid;place-items:center;font-size:23px;font-weight:900}.top h1{font-size:20px;margin:0}.top p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.card{background:linear-gradient(160deg,#151f33,#101726);border:1px solid var(--line);border-radius:18px;padding:16px;margin:13px 0;box-shadow:0 12px 35px #0003}
+h2{font-size:16px;margin:0 0 12px}.hint{color:var(--muted);font-size:12px;line-height:1.6}label{display:block;font-size:13px;color:#cbd7ec;margin:12px 0 6px}
+textarea,select{width:100%;border:1px solid #30415d;background:#0b1220;color:var(--txt);border-radius:12px;padding:12px;font:inherit}
+textarea{min-height:135px;resize:vertical}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btns{display:flex;flex-wrap:wrap;gap:8px}
+button{border:0;border-radius:12px;padding:12px 14px;background:#263653;color:white;font-weight:650;cursor:pointer}
+button.chosen{background:#5140a9;outline:1px solid #a99aff}.primary{width:100%;margin-top:15px;background:linear-gradient(100deg,var(--a),#287fd8);font-size:16px;padding:15px}.primary:disabled{opacity:.55;cursor:wait}
+.status{white-space:pre-wrap;color:#c5d5ee;font-size:13px;margin-top:12px;line-height:1.6}.error{color:#ffb7c4}.good{color:#a8f0d0}
+video{width:100%;border-radius:14px;background:#05070b;margin-top:10px;max-height:480px}.hidden{display:none}
+a{color:#c9bdff;display:inline-block;margin-top:12px}.notice{padding:11px;border:1px solid #355b67;background:#10242b;border-radius:12px;color:#bcece5;font-size:12px;line-height:1.6}
+footer{color:var(--muted);font-size:11px;text-align:center;padding:18px}
+@media(max-width:420px){.grid{gap:8px}.card{padding:14px}}
+</style></head>
+<body><main>
+<header class="top"><div class="logo">G</div><div><h1>Gemini Video Studio</h1><p>তোমার গল্প থেকে AI ভিডিও • Mobile friendly</p></div></header>
+<section class="card"><h2>✍️ তোমার স্ক্রিপ্ট</h2>
+<textarea id="prompt" maxlength="5000" placeholder="ভিডিওতে কী দেখাতে চাও বিস্তারিত লেখো..."></textarea>
+<p class="hint">দৃশ্য, চরিত্র, পরিবেশ, ক্যামেরার গতি, আলো ও সাউন্ডের ধরন লিখলে ভালো ফল পেতে পারো।</p></section>
+<section class="card"><h2>🎬 ভিডিও সেটিংস</h2>
+<label>ভিডিওর স্টাইল</label><div class="btns" id="styles">
+<button class="chosen" data-style="Cinematic realistic">Realistic</button><button data-style="Historical cinematic">Historical</button><button data-style="Fantasy cinematic">Fantasy</button><button data-style="Anime">Anime</button><button data-style="Documentary">Documentary</button></div>
+<div class="grid">
+<div><label for="duration">দৈর্ঘ্য</label><select id="duration"><option value="5">5 সেকেন্ড</option><option value="8" selected>8 সেকেন্ড</option><option value="10">10 সেকেন্ড</option><option value="15">15 সেকেন্ড</option></select></div>
+<div><label for="ratio">ভিডিও সাইজ</label><select id="ratio"><option value="9:16">9:16 (TikTok/Reels)</option><option value="16:9">16:9 (YouTube)</option></select></div>
+<div><label for="resolution">রেজোলিউশন</label><select id="resolution"><option value="720p">720p</option><option value="1080p">1080p (upscaled)</option></select></div>
+<div><label for="language">ভাষা/ভয়েস নির্দেশনা</label><select id="language"><option>বাংলা</option><option>English</option><option>No narration</option></select></div>
+</div>
+<button class="primary" id="generate">✨ ভিডিও তৈরি করো</button><div id="status" class="status" role="status" aria-live="polite">সার্ভার সংযোগ পরীক্ষা হচ্ছে...</div></section>
+<section class="card hidden" id="result"><h2>🎥 তোমার ভিডিও</h2><video id="video" controls playsinline></video><a id="download" download="gemini-video.mp4">ভিডিও ডাউনলোড করো</a></section>
+<section class="card"><div class="notice">🔒 নিরাপদ সংযোগ: API Key সার্ভারে থাকে। ব্যবহারকারীদের কোনো API Key বা Backend URL দিতে হবে না।<br><br>⚠️ ভিডিও তৈরি করতে Google Gemini API quota/billing লাগতে পারে। এই অ্যাপের মালিকের API account থেকে খরচ হবে।</div></section>
+<footer>Gemini Video Studio • AI-generated video</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);let style="Cinematic realistic";let busy=false;
+document.querySelectorAll("#styles button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#styles button").forEach(x=>x.classList.remove("chosen"));b.classList.add("chosen");style=b.dataset.style}));
+function showStatus(t,c=""){ $("status").textContent=t;$("status").className="status "+c}
+async function checkServer(){try{const r=await fetch("/health");const d=await r.json();if(!r.ok||!d.configured)throw new Error("সার্ভারে Gemini API Key সেট করা নেই। অ্যাপের মালিককে Render Environment-এ GEMINI_API_KEY সেট করতে হবে।");showStatus("সার্ভার প্রস্তুত। এখন ভিডিও তৈরি করতে পারো।","good")}catch(e){showStatus("সার্ভার সংযোগ সমস্যা: "+e.message,"error")}}
+async function pollJob(id){const deadline=Date.now()+15*60*1000;while(Date.now()<deadline){await new Promise(r=>setTimeout(r,5000));const r=await fetch("/api/videos/"+encodeURIComponent(id));const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||"ভিডিওর অবস্থা জানা যায়নি।");if(d.status==="completed"&&d.videoUrl){const url=new URL(d.videoUrl,location.origin).href;$("video").src=url;$("download").href=url;$("result").classList.remove("hidden");showStatus("ভিডিও তৈরি হয়েছে! নিচে দেখো ও ডাউনলোড করো।","good");return}if(d.status==="failed")throw new Error(d.error||"ভিডিও তৈরি ব্যর্থ হয়েছে।");showStatus("Gemini ভিডিও তৈরি করছে... অনুগ্রহ করে অপেক্ষা করো।")}
+throw new Error("ভিডিও তৈরিতে ১৫ মিনিটের বেশি সময় লাগছে। পরে আবার চেষ্টা করো।")}
+$("generate").onclick=async()=>{if(busy)return;const prompt=$("prompt").value.trim();if(!prompt){showStatus("আগে ভিডিওর স্ক্রিপ্ট লেখো।","error");return}busy=true;$("generate").disabled=true;$("result").classList.add("hidden");showStatus("ভিডিও তৈরির কাজ শুরু হচ্ছে...");
+try{const r=await fetch("/api/videos",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt,style,duration:Number($("duration").value),aspectRatio:$("ratio").value,resolution:$("resolution").value,language:$("language").value})});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||"সার্ভার অনুরোধ গ্রহণ করেনি।");if(!d.jobId)throw new Error(d.error||"সার্ভার Job ID দেয়নি।");await pollJob(d.jobId)}catch(e){showStatus("সমস্যা: "+e.message,"error")}finally{busy=false;$("generate").disabled=false}};
+checkServer();
+</script></body></html>
